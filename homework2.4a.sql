@@ -42,3 +42,9 @@ INSERT INTO collection_of_songs(collection_name, year_of_release)
 INSERT INTO track_collection(track_id, collection_of_songs_id) 
 	values(1,1), (3,1), (2,2), (4,2), (9,3), (11,3), (10,4), (12,4), 
 		(13,5), (15,5), (14,6), (16,6), (5,7), (7,7), (6,8), (8,8);
+
+INSERT INTO genre_executor(genre_id, executor_id) 
+	VALUES(3,7), (4,3);
+	
+INSERT INTO track(track_name, duration, album_id) 
+	values('Белый кит', 320, 3), ('Gnat', 225, 4);
