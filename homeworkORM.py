@@ -5,7 +5,7 @@ from pprint import pprint
 
 Base = declarative_base()
 
-engine = sq.create_engine('postgresql+psycopg2://*******:*******@localhost:5432/postgres')
+engine = sq.create_engine('postgresql+psycopg2://********:********@localhost:5432/postgres')
 Session = sessionmaker(bind=engine)
 
 class Genre(Base):
@@ -13,7 +13,7 @@ class Genre(Base):
 
     id = sq.Column(sq.Integer, primary_key=True)
     genre_name = sq.Column(sq.String, nullable=False, unique=True)
-    executors = relationship('Executor', secondary='genre_executor')
+    executors = relationship('Executor', secondary='genre_executor', back_populates='genres', cascade="all,delete", cascade_backrefs=True)
 
 
 genre_executor = sq.Table(
@@ -28,8 +28,8 @@ class Executor(Base):
 
     id = sq.Column(sq.Integer, primary_key=True)
     executor_name = sq.Column(sq.String, nullable=False)
-    genres = relationship(Genre, secondary=genre_executor)
-    albums = relationship('Album', secondary='executor_album')
+    genres = relationship(Genre, secondary=genre_executor, back_populates='executors', cascade="all,delete")
+    albums = relationship('Album', secondary='executor_album', back_populates='executors', cascade="all,delete", cascade_backrefs=True)
 
 
 executor_album = sq.Table(
@@ -46,7 +46,7 @@ class Album(Base):
     album_name = sq.Column(sq.String, nullable=False)
     year_of_release = sq.Column(sq.Integer, nullable=False)
     tracks = relationship('Track', backref='album')
-    executors = relationship(Executor, secondary=executor_album)
+    executors = relationship(Executor, secondary=executor_album, back_populates='albums', cascade="all,delete")
 
 
 class Track(Base):
